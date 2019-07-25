@@ -1,0 +1,145 @@
+
+                    <div class="form-group">
+                        <label for="checklist_dpia_check" class="col-sm-2">xxxx个人数据字段评估<span style="color:red">*</span></label>
+                        <label for="checklist_dpia_check" class="col-sm-4 ">完成第二部分产品个人数据影响度评估</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-6">
+                            <select   class="form-control" name="checklist_dpia_check">
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_dpia_check 1  %}selected{% endifequal %}{% else %}selected{%endifequal%}>符合</option>
+                                <option value="2" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_dpia_check 2  %}selected{% endifequal %}{%endifequal%}>不符合</option>
+                                <option value="3" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_dpia_check 3  %}selected{% endifequal %}{%endifequal%}>不适用</option>
+                            </select></div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="checklist_datatrans" class="col-sm-2">数据传输<span style="color:red">*</span></label>
+                        <label for="checklist_datatrans" class="col-sm-4">检查是否使用HTTPS进行传输</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-6">
+                            <select   class="form-control" name="checklist_datatrans">
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_datatrans 1  %}selected{% endifequal %}{% else %}selected{%endifequal%}>符合</option>
+                                <option value="2" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_datatrans 2  %}selected{% endifequal %}{%endifequal%}>不符合</option>
+                                <option value="3" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_datatrans 3  %}selected{% endifequal %}{%endifequal%}>不适用</option>
+                            </select></div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checklist_db_manage" class="col-sm-2">后台数据库管理<span style="color:red">*</span></label>
+                        <label for="checklist_db_manage" class="col-sm-4 ">是否启动数据库敏感字段加密</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-6">
+                            <select   class="form-control" name="checklist_db_manage">
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_db_manage 1  %}selected{% endifequal %}{% else %}selected{%endifequal%}>符合</option>
+                                <option value="2" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_db_manage 2  %}selected{% endifequal %}{%endifequal%}>不符合</option>
+                                <option value="3" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_db_manage 3  %}selected{% endifequal %}{%endifequal%}>不适用</option>
+                            </select></div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="checklist_user_allow" class="col-sm-2 ">用户同意<span style="color:red">*</span></label>
+                        <label for="checklist_user_allow" class="col-sm-4 ">若收集敏感个人数据，用户弹窗功能是否在记录用户同意过程</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-6">
+                            <select   class="form-control" name="checklist_user_allow">
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_user_allow 1  %}selected{% endifequal %}{% else %}selected{%endifequal%}>符合</option>
+                                <option value="2" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_user_allow 2  %}selected{% endifequal %}{%endifequal%}>不符合</option>
+                                <option value="3" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_user_allow 3  %}selected{% endifequal %}{%endifequal%}>不适用</option>
+                            </select></div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="checklist_privacy_policy" class="col-sm-2">隐私策略<span style="color:red">*</span></label>
+                        <label for="checklist_privacy_policy" class="col-sm-4 ">产品隐私策略是否更新在最新产品中，内容是否结合产品功能和数据进行了更新</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-6"><select   class="form-control" name="checklist_privacy_policy">
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_privacy_policy 1  %}selected{% endifequal %}{% else %}selected{%endifequal%}>符合</option>
+                                <option value="2" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_privacy_policy 2  %}selected{% endifequal %}{%endifequal%}>不符合</option>
+                                <option value="3" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_privacy_policy 3  %}selected{% endifequal %}{%endifequal%}>不适用</option>
+                            </select></div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checklist_feedback" class="col-sm-2 ">投诉反馈机制<span style="color:red">*</span></label>
+                        <label for="checklist_feedback" class="col-sm-4 ">用户投诉处理流程是否建立，相关客户人员是否接受了培训</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-6">
+                            <select   class="form-control" name="checklist_feedback">
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_feedback 1  %}selected{% endifequal %}{% else %}selected{%endifequal%}>符合</option>
+                                <option value="2" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_feedback 2  %}selected{% endifequal %}{%endifequal%}>不符合</option>
+                                <option value="3" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_feedback 3  %}selected{% endifequal %}{%endifequal%}>不适用</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checklist_api" class="col-sm-2 ">第三方使用个人数据<span style="color:red">*</span></label>
+                        <label for="checklist_api" class="col-sm-4 ">是否有第三方使用本产品的个人数据</label>
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">
+                                <select   class="form-control" name="checklist_api" id="checklist_api">
+                                <option value="0" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_api 0  %}selected{% endifequal %}{% else %}selected{%endifequal%}>未使用</option>
+                                <option value="1" {%ifequal edit_add 'edit'%}{% ifequal d.checklist_api 1  %}selected{% endifequal %}{%endifequal%}>使用</option>
+
+                            </select></div>
+
+                            <div id="checklist_api_div" class="col-sm-8">
+                                请填写第三方产品名称:<input type="text"   name="checklist_api_name" id="checklist_api_name" {%ifequal edit_add 'edit'%}{% if d.checklist_api_name  %}value="{{ d.checklist_api_name }}"{% endif %}{%endifequal%} />
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                            <label for="checklist_backinfo" class="col-sm-2 ">checklist备注信息<br>不适用的项请在此处填写说明信息</label>
+
+                            <div class="col-sm-9">
+                                <textarea name="checklist_backinfo" class="form-control"  >{%ifequal edit_add 'edit'%}{% if d.checklist_backinfo  %}{{ d.checklist_backinfo }}{% endif %}{%endifequal%}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_trans" class="col-sm-2">数据跨境<span style="color:red">*</span></label>
+                        <label  for="data_trans" class="col-sm-4 "></label>
+                        <div class="col-sm-6">
+                            <select id="data_trans" name="data_trans" class="selectpicker show-tick   form-control" multiple>
+                                {% for u in data_trans %}
+                                    <option value="{{ u.id }}" {%ifequal edit_add 'edit'%}{% if u.id in d.get_data_trans %}selected{% endif %}{%endifequal%}>{{ u.desc_str }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_country" class="col-sm-2 ">用户所在国家<span style="color:red">*</span></label>
+                        <label for="user_country" class="col-sm-4 "></label>
+                        <div class="col-sm-6">
+                            <select id="user_country" name="user_country" class="selectpicker show-tick  form-control" multiple>
+                                {% for u in user_countrys %}
+                                    <option value="{{ u.id }}" {%ifequal edit_add 'edit'%}{% if u.id in d.get_user_country %}selected{% endif %}{%endifequal%}>{{ u.desc_str }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_country" class="col-sm-2">数据保存位置（国家）<span style="color:red">*</span></label>
+                        <label for="data_country" class="col-sm-4 "></label>
+                        <div class="col-sm-6">
+                            <select id="data_country" name="data_country" class="selectpicker show-tick   form-control" multiple>
+                                {% for u in user_countrys %}
+                                    <option value="{{ u.id }}" {%ifequal edit_add 'edit'%}{% if u.id in d.get_data_country %}selected{% endif %}{%endifequal%}>{{ u.desc_str }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>

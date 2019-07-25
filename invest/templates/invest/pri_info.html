@@ -1,0 +1,170 @@
+<table class="table table-bordered table-striped dataTable" role="grid">
+    <thead>
+    <tr>
+        <th>数据处理过程</th>
+        <th>数据处理内容</th>
+        <th>数据处理要求</th>
+        <th>评估结果</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    <tr class="odd">
+        <td>获取关注点</td>
+        <td>数据收集必要性，是否是业务所需要</td>
+        <td><span  name="get_ness_span"></span></td>
+        <td>
+            <select   class="form-control" name="get_ness">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="odd">
+        <td></td>
+        <td>获取来源</td>
+        <td></td>
+        <td>
+            <select  class="selectpicker show-tick  form-control"  name="get_src" multiple>
+                <option></option>
+                {% for p in  get_src_dict%}
+                    <option value={{ p.id }}> {{ p.desc_str }}</option>
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td>使用关注点</td>
+        <td>使用该数据的显示方式</td>
+        <td><span name="use_show_span"></span></td>
+        <td>
+            <select   class="form-control" name="use_show">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td></td>
+        <td>是否进行用户数据画像</td>
+        <td></td>
+        <td>
+            <select class="form-control"  name="use_dp">
+                <option></option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td></td>
+        <td>该字段所关联的操作系统日志是否保留6个月,主要是指字段自主生成的相关日志。例如用户登录，删除，下线的记录</td>
+        <td><span name="use_log_span"></span></td>
+        <td>
+            <select   class="form-control" name="use_log">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td>传输关注点</td>
+        <td>该字段是否向第三方进行传输，传输方式是否加密</td>
+        <td><span name="trans_out_span"></span></td>
+        <td>
+            <select   class="form-control" name="trans_out">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td></td>
+        <td>该字段是否向内部传输，传输方式是否加密</td>
+        <td><span name="trans_in_span"></span></td>
+        <td>
+            <select   class="form-control" name="trans_in">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td>存储关注点</td>
+        <td>用户数据在服务器内的呈现形式</td>
+        <td><span name="storage_point_span"></span></td>
+        <td>
+            <select   class="form-control" name="storage_point">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td></td>
+        <td>该数据是否存储在公司服务器，还是通过系统接口调用</td>
+        <td><span name="storage_allow_span"></span></td>
+        <td>
+            <select   class="form-control" name="storage_allow">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td></td>
+        <td>存储的数据的是否采用加密算法，是否明文，还是不存储</td>
+        <td><span name="storage_encryp_span"></span></td>
+        <td>
+            <select   class="form-control" name="storage_encryp">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td></td>
+        <td>关联该字段的服务器的日志记录，主要是指公司后台对于该字段的运维操作日志。例如后台运维人员核查该用户一些账户行为所产生的记录</td>
+        <td><span name="server_log_span"></span></td>
+        <td>
+            <select   class="form-control" name="server_log">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td>删除关注点</td>
+        <td>字段删除（一般关联账户一体化删除）</td>
+        <td><span name="delete_point_span"></span></td>
+        <td style="white-space:nowrap"  width="90px">
+            <select   class="form-control" name="delete_point">
+                <option value="1" selected>符合</option>
+                <option value="2" >不符合</option>
+                <option value="3" >不适用</option>
+            </select>
+        </td>
+    </tr>
+    <tr class="even">
+        <td style="white-space:nowrap">埋点字段<br>半角分号(;)分隔</td>
+        <td colspan="3">
+            <textarea name="privacy_infoc" class="form-control"></textarea>
+        </td>
+    </tr>
+    <tr class="even">
+        <td style="white-space:nowrap">备注信息<br>不超过250字</td>
+        <td colspan="3">
+            <textarea name="privacy_backinfo" class="form-control" ></textarea>
+        </td>
+    </tr>
+    </tbody>
+</table>

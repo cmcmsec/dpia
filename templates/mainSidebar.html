@@ -1,0 +1,55 @@
+<!-- Left side column. contains the sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+     
+      <!-- search form -->
+      <!--<form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>-->
+      <br><br>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+		
+		{%ifequal flag_one "invest"%}
+		<li class="treeview active">
+		{%else%}
+		<li class="treeview">
+		{%endifequal%}
+          <a href="/invest/">
+            <i class="fa fa-list-ul"></i> <span>个人数据评估</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+			
+			  {%ifequal flag_two "investlist"%}<li class="active">{%else%}<li>{%endifequal%}<a href="/invest/investlist/self/"><i class="fa fa-circle-o"></i> 审查记录列表 </a></li>
+			  {%ifequal flag_two "add_invest"%}<li class="active">{%else%}<li>{%endifequal%}<a href="/invest/add_invest/"><i class="fa fa-circle-o"></i> 添加审查记录 </a></li>
+
+		  </ul>
+        </li>
+		
+		
+
+		
+          <!--<li class="header"></li>-->
+
+
+
+      {%ifequal flag_one "help"%}<li class="treeview active">{%else%}<li>{%endifequal%}<a href="/static/个人数据合规评估平台 使用文档.pdf"><i class="fa fa-book"></i> <span>Help</span></a></li>
+      {%ifequal flag_one "contact"%}<li class="treeview active">{%else%}<li>{%endifequal%}<a href="/contact/"><i  class="fa fa-envelope"></i> <span>Contact</span></a></li>
+          <!--<li><a href="https://adminlte.io/docs"><i class="fa fa-fw fa-external-link"></i> <span>Documentation</span></a></li>-->
+
+
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>

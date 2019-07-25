@@ -1,0 +1,1003 @@
+{%extends "base.html"%}
+
+{% block headercss %}
+
+ <style>
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+
+
+
+</style>
+
+{% endblock %}
+
+{% block contentWrapper%}
+
+<div class="content-wrapper">
+
+    <section class="content" >
+
+
+      <div class="row">
+
+        <div class="col-sm-12" >
+          <div class="box">
+
+            <div class="box-header">
+              <h3 style="float:left" class="box-title">添加审查记录</h3>
+
+            </div>
+
+            <!-- /.box-header -->
+        <form class="form-horizontal" id="invest_form" action="#" method="POST">
+            {% csrf_token %}
+            <div class="box-body" >
+                <div class="col-sm-12"><hr/><h3 style="float:left" class="box-title" >产品基本信息<a id="div_first_btn" style="color:black">  - </a></h3></div>
+
+                <div id="div_first" class="col-sm-12">
+                    {%ifequal edit_add 'edit'%}<input type="hidden" id="edit_id" name="edit_id" value="{{ d.id }}">{%endifequal%}
+
+                    <div class="form-group">
+                        <label for="pro_name" class="col-sm-3 ">产品名称<span style="color:red">*</span>
+                            <a style="float:right" onclick="addProName()">添加产品</a></label>
+                        <div class="col-sm-6" style="display:inline">
+                             <select id="pro_name" name="pro_name" class="selectpicker show-tick form-control" data-live-search="true" >
+                                 <option value="">请选择</option>
+                                {% for  p in products %}
+                                    <option value="{{ p.id }}"  {%ifequal edit_add 'edit'%}{%ifequal p.id d.pro_name%}selected{%endifequal%}{%endifequal%}>{{ p.pro_name }}</option>
+                                {% endfor %}
+                            </select>
+
+
+                        </div>
+                        <div class="col-sm-6" style="display:inline">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pro_desc" class="col-sm-3 ">产品介绍<span style="color:red">*</span></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="pro_desc" name="pro_desc"  placeholder="产品功能介绍..."  {%ifequal edit_add 'edit'%}value="{{d.pro_desc}}"{%endifequal%}>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="pro_pri_leader" class="col-sm-3 ">产品隐私负责人（默认一级部门负责人）<span style="color:red">*</span></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="pro_pri_leader" name="pro_pri_leader"  placeholder="产品隐私负责人..."  {%ifequal edit_add 'edit'%}value="{{d.pro_pri_leader}}"{%endifequal%}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pro_pri_name" class="col-sm-3 ">产品隐私专员（默认产品经理）<span style="color:red">*</span></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="pro_pri_name" name="pro_pri_name"  placeholder="产品隐私专员..."  {%ifequal edit_add 'edit'%}value="{{d.pro_pri_name}}"{%endifequal%}>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div  class="col-sm-12"><hr/><h3 style="float:left" class="box-title">产品个人数据影响度评估  <a id="div_second_btn" style="color:black">  - </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/static/个人数据定义.pdf">个人数据定义</a></h3></div>
+
+                <br />
+            <div id="div_second" class="col-sm-12">
+
+                <div class="col-sm-12">
+                    <h4 class="box-title">1、以下数据不可收集，若收集请选择</h4>
+                    <table class="table table-bordered table-striped dataTable" role="grid">
+                        <tr class="odd">
+                            <td>
+                                <input  type="checkbox"  id="asset_password" name="asset_password" {%ifequal edit_add 'edit'%}{% if d.asset_password  %}checked{% endif %}{%endifequal%} >&nbsp;&nbsp;<span style="color:red">支付密码</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="biology_face" name="biology_face" {%ifequal edit_add 'edit'%}{% if d.biology_face  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">面部特征数据</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="biology_voice" name="biology_voice" {%ifequal edit_add 'edit'%}{% if d.biology_voice  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">声音特征数据</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="biology_other" name="biology_other" {%ifequal edit_add 'edit'%}{% if d.biology_other  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">其它生物特征</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-12">
+                    <h4 class="box-title">2、以下数据禁止处理，若处理请选择</h4>
+                    <table class="table table-bordered table-striped dataTable" role="grid">
+                        <tr class="odd">
+                            <td>
+                                <input  type="checkbox"  id="deal_nation" name="deal_nation" {%ifequal edit_add 'edit'%}{% if d.deal_nation  %}checked{% endif %}{%endifequal%} >&nbsp;&nbsp;<span style="color:red">种族民族出身</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="deal_politic" name="deal_politic" {%ifequal edit_add 'edit'%}{% if d.deal_politic  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">政治观点</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="deal_religion" name="deal_religion" {%ifequal edit_add 'edit'%}{% if d.deal_religion  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">宗教哲学信仰</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="deal_member" name="deal_member" {%ifequal edit_add 'edit'%}{% if d.deal_member  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">工会会员资格</span>
+                            </td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <input  type="checkbox"  id="deal_biology" name="deal_biology" {%ifequal edit_add 'edit'%}{% if d.deal_biology  %}checked{% endif %}{%endifequal%} >&nbsp;&nbsp;<span style="color:red">生物学数据（基因数据，个人生物识别信息）</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="deal_health" name="deal_health" {%ifequal edit_add 'edit'%}{% if d.deal_health  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">健康数据</span>
+                            </td>
+                            <td>
+                                <input  type="checkbox"  id="deal_sex" name="deal_sex" {%ifequal edit_add 'edit'%}{% if d.deal_sex  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<span style="color:red">性取向性生活</span>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-sm-12">
+                    <h4>3、以下数据为个人数据，请作出影响度评估</h4>
+                <table class="table table-bordered table-striped dataTable" role="grid">
+                    <tr class="odd">
+                        <td >
+                            <input  type="checkbox" class="minimal" id="device_mobile" name="device_mobile" {%ifequal edit_add 'edit'%}{% if d.device_mobile  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a  onclick="showPrivacyModal(this)"><label > 手机的品牌，型号，分辨率，CPU型号，内存大小等</label></a>
+
+                        </td>
+                        <td>
+                            <input  type="checkbox" class="minimal" id="device_imei" name="device_imei" {%ifequal edit_add 'edit'%}{% if d.device_imei  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >Mac address，IMEI，智能硬件的硬件序列号，aid，推送ID（REGID).</label></a>
+                        </td>
+                        <td>
+                            <input  type="checkbox" class="minimal" id="device_apps" name="device_apps" {%ifequal edit_add 'edit'%}{% if d.device_apps  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >用户应用使用情况（记录）</label></a>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td>
+                            <input  type="checkbox" class="minimal" id="device_pkgs" name="device_pkgs" {%ifequal edit_add 'edit'%}{% if d.device_pkgs %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >用户设备中已经安装的应用包名列表</label></a>
+                        </td>
+
+                        <td>
+                            <input  type="checkbox" class="minimal" id="net_id_api" name="net_id_api" {%ifequal edit_add 'edit'%}{% if d.net_id_api  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label > 社交功能产品,  第三方社交账号：FB, Google, 微信，微博等</label></a>
+                        </td>
+                        <td>
+                            <input  type="checkbox" class="minimal" id="position_gps" name="position_gps" {%ifequal edit_add 'edit'%}{% if d.position_gps  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >经纬度，GPS</label></a>
+                        </td>
+                    </tr>
+                    <tr class="odd">
+                        <td>
+                            <input  type="checkbox" class="minimal" id="basis_email" name="basis_email" {%ifequal edit_add 'edit'%}{% if d.basis_email  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >邮箱</label></a>
+                        </td>
+                        <td >
+                            <input  type="checkbox" class="minimal" id="net_id_account" name="net_id_account" {%ifequal edit_add 'edit'%}{% if d.net_id_account  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a  onclick="showPrivacyModal(this)"><label >账户名</label></a>
+
+                        </td>
+
+                        <td>
+                            <input  type="checkbox" class="minimal" id="net_id_password" name="net_id_password" {%ifequal edit_add 'edit'%}{% if d.net_id_password  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label > 登录密码</label></a>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td >
+                            <input  type="checkbox" class="minimal" id="basis_name" name="basis_name" {%ifequal edit_add 'edit'%}{% if d.basis_name  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >姓名</label></a>
+
+                        </td>
+                        <td>
+                            <input  type="checkbox" class="minimal" id="basis_mobilephone" name="basis_mobilephone" {%ifequal edit_add 'edit'%}{% if d.basis_mobilephone  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >手机号</label></a>
+                        </td>
+                        <td>
+                            <input  type="checkbox" class="minimal" id="basis_telephone" name="basis_telephone" {%ifequal edit_add 'edit'%}{% if d.basis_telephone  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >电话号码</label></a>
+                        </td>
+                    </tr>
+                    <tr class="odd">
+                        <td >
+                            <input  type="checkbox" class="minimal" id="basis_address" name="basis_address" {%ifequal edit_add 'edit'%}{% if d.basis_address  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a name="aa" onclick="showPrivacyModal(this)"><label > 地址</label></a>
+
+                        </td>
+                        <td >
+                            <input  type="checkbox" class="minimal" id="personal_id" name="personal_id" {%ifequal edit_add 'edit'%}{% if d.personal_id  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a name="aa" onclick="showPrivacyModal(this)"><label > 身份证号</label></a>
+
+                        </td>
+
+                        <td>
+                            <input  type="checkbox" class="minimal" id="biology_finger" name="biology_finger" {%ifequal edit_add 'edit'%}{% if d.biology_finger  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >指纹</label></a><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;高风险</span>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td>
+                            <input  type="checkbox" class="minimal" id="biology_portrait" name="biology_portrait" {%ifequal edit_add 'edit'%}{% if d.biology_portrait  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a onclick="showPrivacyModal(this)"><label >面部肖像数据</label></a><span style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;高风险</span>
+                        </td>
+                        <td >
+                            <input  type="checkbox" class="minimal" id="personal_id" name="personal_id" {%ifequal edit_add 'edit'%}{% if d.personal_id  %}checked{% endif %}{%endifequal%}>&nbsp;&nbsp;<a name="aa" onclick="showPrivacyModal(this)"><label >安全功能产品，提供保险服务：上报的用户保单信息和保单号</label></a>
+
+                        </td>
+
+                    </tr>
+                </table>
+                </div>
+                {% include 'invest/second_info.html' %}
+            </div>
+
+
+                <div class="col-sm-12"><hr/><h3 style="float:left" class="box-title">产品个人数据检查checklist <a id="div_third_btn" style="color:black">  - </a></h3><br/></div>
+
+                <div id="div_third" class="col-sm-12">{% include 'invest/third_info.html' %}</div>
+                <div class="box-footer" style="text-align:center;height:60px;">
+                    <button type="button" class="btn btn-primary" style="width:80px" onclick="save()" >保存</button>
+                </div>
+            </div>
+
+
+
+         </form>
+
+
+            <!-- /.box -->
+          </div>
+		</div>
+
+	</div> <!-- /.row-->
+    <div class = "modal fade" id = "pro_name_modal" >
+       <div class = "modal-dialog" >
+           <div class = "modal-content" >
+               <div class = "modal-header" >
+                    <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Close" >
+                        <span aria-hidden = "true" > &times
+                        </span>
+                    </button>
+                    <h4 class = "modal-title" >添加产品名称 </h4>
+                </div >
+                <div class = "modal-body" >
+                    <div class="col-sm-3">产品名称</div>
+                    <div class="col-sm-8"><input type="text" id="add_proname" name="add_proname" placeholder="请添加产品名称"/></div>
+                </div>
+                <div class = "modal-footer" >
+                    <button type = "button" class = "btn btn-default" data-dismiss = "modal" > Close </button>
+                    <button type = "button" onclick="saveProName()" class = "btn btn-default" data-dismiss = "modal" > Save </button>
+                </div>
+            </div >
+                <!-- / .modal-content -->
+        </div>
+            <!-- / .modal-dialog -->
+    </div >
+
+	</section>
+</div>
+{% endblock %}
+{% block bodyjs %}
+
+<script src="/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/static/bower_components/datatables.net-bs/js/dataTables.buttons.min.js"></script>
+
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
+
+    <script type="text/javascript">
+     $(function() {
+         $('.selectpicker').selectpicker({
+
+                noneSelectedText:'请选择'
+            });
+         //$('.selectpicker').selectpicker('val','mustard');
+     })
+        $(window).on('load', function () {
+
+            $('.selectpicker').selectpicker({
+                'selectedText': 'cat',
+                'noneSelectedText':'请选择',
+            });
+
+        });
+    </script>
+    <script>
+        function addProName(){
+            $('#pro_name_modal').modal('show');
+        }
+        function saveProName() {
+
+            var msg = "";
+            var add_proname = $("#add_proname").val();
+            if (add_proname==""){
+                msg="产品名称不能为空";
+            }
+
+            if (msg == "") {
+                var formData = new FormData();
+                formData.append("add_proname", add_proname);
+                formData.append("csrfmiddlewaretoken", '{{ csrf_token }}');
+                $.ajax({
+                    type: "POST",
+                    url: "/invest/saveproname/",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (result) {
+
+                        if (result.code == 0) {
+                            alert('添加成功');
+                            $("#pro_name").append("<option selected  value='"+result.ptid+"'>"+add_proname+"</option>");
+
+
+                            $("#pro_name").selectpicker('val', ""+result.ptid);
+
+                        } else if (result.code == 1) {
+                            alert("产品名称不能为空");
+
+                        } else if (result.code == 2) {
+                            alert("已经存在相同名称的产品");
+
+                        } else {
+                            alert('异常，请检查');
+                        }
+                        ;
+
+                    },
+                    error: function () {
+                        alert("异常");
+                    }
+                });
+            } else {
+                alert(msg);
+            }
+        }
+
+    </script>
+    <script>
+        function uploadLeak(){
+
+            var filestr = $("#leakFile").val();
+
+            if (filestr==""){
+                alert("请选择要上传的文件");
+                return false;
+            }
+
+            var formData=new FormData();
+            formData.append("leakfile",$("#leakFile")[0].files[0]);
+            formData.append("csrfmiddlewaretoken",'{{ csrf_token }}');
+            $('#leakFile').attr('disabled',true);
+            $('#leakFileId').attr('disabled',true);
+            $('#form-file-progress').show();
+	        $.ajax({
+                processData: false,
+                contentType: false,
+			    type: "POST",
+
+			    url:"/invest/uploadleakfile/",
+			    data:formData,
+			    success:function (result) {
+                    $('#leakFile').attr('disabled',false);
+                    $('#leakFileId').attr('disabled',false);
+                    $('#form-file-progress').hide();
+				    if (result.code == 0) {
+                        $("#checklist_dataleak_path").val(result.data.leak_file);
+                        $("#checklist_dataleak_name").val(result.data.leak_name);
+
+					    alert("上传成功");
+
+                    }else if(result.code == 2){
+                        alert("此文件已存在，请重新选择文件或修改原有文件。（md5判断）");
+
+                    }else if(result.code == 3){
+                        alert("文件名称有异常");
+
+                    }else if(result.code == 4){
+                        alert("文件名称不符合要求");
+
+                    }else if(result.code == 5){
+                        alert("存在重名文件");
+
+                    }else{
+
+					     alert('异常，请检查');
+				     };
+
+			    },
+			    error:function(){
+				    alert("异常");
+			    }
+		    });
+        }
+    </script>
+
+    <script>
+         $(function() {
+             {% for p in  pri_refer_list%}
+                 var pname = '{{ p.col_name }}';
+                 var div_pname = '#'+pname+'_div';
+                 //alert(div_pname);
+                 //alert('{{ p.trans_in }}');
+                /*if(pname=='device_pkgs'){
+                    alert(div_pname);
+
+                }*/
+                 $(div_pname).find("span[name='get_ness_span']").text('{{ p.get_ness }}');
+                 $(div_pname).find("span[name='use_show_span']").text('{{ p.use_show }}');
+                 $(div_pname).find("span[name='use_log_span']").text('{{ p.use_log }}');
+                 $(div_pname).find("span[name='trans_out_span']").text('{{ p.trans_out }}');
+                 $(div_pname).find("span[name='trans_in_span']").text('{{ p.trans_in }}');
+                 $(div_pname).find("span[name='storage_point_span']").text('{{ p.storage_point }}');
+                 $(div_pname).find("span[name='storage_allow_span']").text('{{ p.storage_allow }}');
+                 $(div_pname).find("span[name='storage_encryp_span']").text('{{ p.storage_encryp }}');
+                 $(div_pname).find("span[name='server_log_span']").text('{{ p.server_log }}');
+                 $(div_pname).find("span[name='delete_point_span']").text('{{ p.delete_point }}');
+                 /*if(pname=='device_pkgs'){
+                    alert(div_pname);
+                    alert($(div_pname).find("span[name='trans_in_span']").text());
+                 }*/
+             {% endfor %}
+
+         })
+    </script>
+
+<script>
+function dataVerifyBase(){
+    var msg="";
+
+	var pro_name =  $('#pro_name').val();
+	if (pro_name==""){msg="请填写项目名称";}
+
+	if(msg=="") {if ($('#pro_desc').val()=="") {msg="请填写项目介绍";}}
+
+	if(msg=="") {if ($('#user_country').val()=="") {msg="请选择用户所在国家";}}
+
+	if(msg=="") {if ($('#data_country').val()=="") {msg="请选择数据保存位置（国家）";}}
+
+	if(msg=="") {if ($('#pro_pri_leader').val()=="") {msg="请填写产品隐私负责人";}}
+
+	if(msg=="") {if ($('#pro_pri_name').val()=="") {msg="请填写产品隐私专员";}}
+
+	if(msg=="") {if ($('#data_trans').val()=="") {msg="请选择数据跨境传输情况";}}
+
+    return(msg);
+}
+
+function dataVerifyPrivacy(){
+    var msg="";
+     $("input.minimal").each(function(){
+
+             if(msg==""){
+                 var pname=this.name;
+                 //alert(pname);
+                 pname_str=$(this).parent().text();
+                 if(this.checked==true){
+                     if(msg==""){
+                         if($('#'+pname+'_div').find("textarea[name='privacy_infoc']").val()==""){
+                             msg=pname_str+"有未填写选项，埋点字段";
+                         }
+                     }
+                     if(msg==""){
+                         if($('#'+pname+'_div').find("select[name='get_src']").val()==""){
+                             msg=pname_str+"有未填写选项，获取来源";
+                         }
+                     }
+                     if(msg==""){
+                         if($('#'+pname+'_div').find("select[name='use_dp']").val()==""){
+                             msg=pname_str+"有未填写选项，是否进行用户数据画像";
+                         }
+                     }
+
+                 }
+             }else{return false;}
+             //
+
+
+     })
+    //alert(msg);
+    return(msg);
+
+}
+
+function dataVerifyChecklist(){
+    var msg="";
+
+	/*var checklist_dpia_check =  $('#checklist_dpia_check').val();
+	if (checklist_dpia_check==""){msg="请填写xxxxGDPR字段评估工具";}
+
+	if(msg=="") {if ($('#checklist_cookie').val()=="") {msg="请填写Cookie/Token使用";}}
+
+	if(msg=="") {if ($('#checklist_datatrans').val()=="") {msg="请填写数据传输";}}
+
+	if(msg=="") {if ($('#checklist_db_manage').val()=="") {msg="请填写后台数据库管理";}}
+
+	if(msg=="") {if ($('#checklist_privacy_policy').val()=="") {msg="请填写隐私策略";}}
+
+	if(msg=="") {if ($('#checklist_user_allow').val()=="") {msg="请填写用户同意";}}
+
+	if(msg=="") {if ($('#checklist_feedback').val()=="") {msg="请填写投诉反馈机制";}}*/
+
+	if(msg=="") {
+
+        if($("#checklist_api").val()=='1'){
+	            if ($('#checklist_api_name').val()==""){
+	                msg="请填写第三方产品名称";
+                 }
+        }
+	}
+
+    return(msg);
+}
+function pushChecked(data){
+    $("input.minimal").each(function(){
+        if(this.checked==true){
+            var nname=this.name+'_check'
+            var nvalue='true';
+            var sdjson=JSON.stringify(nvalue);
+            var tjson='({ "name": nname, "value":'+sdjson+'})';
+            var teval=eval(tjson);
+            data.push(teval);
+        }
+
+     })
+    return(data);
+}
+function save() {
+    var data = $('#invest_form').serializeArray();
+    msg = dataVerifyBase();
+    if(msg==""){
+        msg=dataVerifyPrivacy();
+    }
+    if(msg==""){
+        msg=dataVerifyChecklist();
+    }
+    //data = pushChecked(data);
+
+    if(msg==""){
+        var sdjson=JSON.stringify($('#user_country').val());
+		var tjson='({ "name": "user_country_list", "value":'+sdjson+'})';
+		var teval=eval(tjson);
+		data.push(teval);
+		var sdjson=JSON.stringify($('#data_country').val());
+		var tjson='({ "name": "data_country_list", "value":'+sdjson+'})';
+		var teval=eval(tjson);
+		data.push(teval);
+		var sdjson=JSON.stringify($('#data_trans').val());
+		var tjson='({ "name": "data_trans_list", "value":'+sdjson+'})';
+		var teval=eval(tjson);
+		data.push(teval);
+		for(var i=0;i < 17;i++){
+
+		    var sdjson=JSON.stringify($("select[name='get_src']").eq(i).val());
+		    var tjson='({ "name": "get_src_list", "value":'+sdjson+'})';
+		    var teval=eval(tjson);
+		    data.push(teval);
+        }
+
+		var urlstr="/invest/save_invest/";
+        {% ifequal edit_add  'edit' %}
+            urlstr="/invest/update_invest/";
+        {% endifequal %}
+        $.ajax({
+            type: "POST",
+            url: urlstr,
+            data: data,
+            success: function (result) {
+                if (result.code == 0) {
+                    alert("保存成功");
+                    window.location.href="/invest/investlist/self/";
+                }else if(result.code == 1){
+                    alert(result.msg);
+                }else{
+                    alert('异常，请检查');
+                };
+            },
+            error: function () {
+                alert("异常");
+            }
+        });
+    }else{
+        alert(msg);
+    }
+
+}
+</script>
+<script type="text/javascript">
+    $(function(){
+        var first_flag=0;
+        var btn_first=document.getElementById('div_first_btn');
+        var hidediv_first=document.getElementById('div_first');
+
+        btn_first.onclick = function(){
+            if(first_flag){
+                hidediv_first.style.display="block";
+                btn_first.innerHTML=" - ";
+                first_flag=0;
+            }else{
+                hidediv_first.style.display="none";
+                btn_first.innerHTML=" + ";
+                first_flag=1;
+            }
+
+        }
+
+
+        var second_flag=0;
+        var btn_second=document.getElementById('div_second_btn');
+        var hidediv_second=document.getElementById('div_second');
+
+        btn_second.onclick = function(){
+            if(second_flag){
+                hidediv_second.style.display="block";
+                btn_second.innerHTML=" - ";
+                second_flag=0;
+            }else{
+                hidediv_second.style.display="none";
+                btn_second.innerHTML=" + ";
+                second_flag=1;
+            }
+
+        }
+
+        var third_flag=0;
+        var btn_third=document.getElementById('div_third_btn');
+        var hidediv_third=document.getElementById('div_third');
+
+        btn_third.onclick = function(){
+            if(third_flag){
+                hidediv_third.style.display="block";
+                btn_third.innerHTML=" - ";
+                third_flag=0;
+            }else{
+                hidediv_third.style.display="none";
+                btn_third.innerHTML=" + ";
+                third_flag=1;
+            }
+        }
+    })
+
+</script>
+
+
+    <script>
+        function showPrivacyModal(obj){
+
+            var pname = $(obj).parent().find('input').prop("name");
+            //alert(pname);
+            var dname= '#'+pname+"_div";
+             $(dname).modal('show');
+
+        }
+
+    $(function() {
+
+        if($('#checklist_api').val()=='1'){
+             document.getElementById('checklist_api'+'_div').style.display='block';
+        }else{
+            document.getElementById('checklist_api'+'_div').style.display='none';
+        }
+        $('#checklist_api').click(function(){
+            //var ob = $("input[name='checklist_dataleak']:checked");
+            if($('#checklist_api').val()=='1'){
+                 document.getElementById('checklist_api'+'_div').style.display='block';
+            }else{
+                document.getElementById('checklist_api'+'_div').style.display='none';
+            }
+        })
+    })
+    </script>
+    <script>
+    $(function(){
+
+        {%ifequal edit_add  'edit'%}
+            {% if d.device_mobile  %}
+                var div_name = '#device_mobile_div';
+                $(div_name).find("select[name='get_ness']").val('{{ device_mobile.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ device_mobile.get_src }}'.split(','));
+                //$.each('{{ device_mobile.get_src }}'.split(','),function(index,obj){
+                //    $(div_name).find("select[name='get_src']").find("option[value='"+obj+"']").prop("selected",true);
+                //})
+                //$(div_name).find("select[name='get_src']").val('{{ device_mobile.get_src }}');
+                $(div_name).find("select[name='use_show']").val('{{ device_mobile.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ device_mobile.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ device_mobile.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ device_mobile.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ device_mobile.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ device_mobile.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ device_mobile.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ device_mobile.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ device_mobile.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ device_mobile.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ device_mobile.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ device_mobile.get_privacy_backinfo|safe }}');
+
+            {% endif %}
+            {% if d.device_imei  %}
+                //alert(12);
+                var div_name = '#device_imei_div';
+                $(div_name).find("select[name='get_ness']").val('{{ device_imei.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ device_imei.get_src }}'.split(','));
+                //$(div_name).find("select[name='get_src']").val('{{ device_imei.get_src }}');
+                $(div_name).find("select[name='use_show']").val('{{ device_imei.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ device_imei.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ device_imei.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ device_imei.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ device_imei.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ device_imei.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ device_imei.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ device_imei.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ device_imei.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ device_imei.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ device_imei.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ device_imei.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.device_apps  %}
+                var div_name = '#device_apps_div';
+                $(div_name).find("select[name='get_ness']").val('{{ device_apps.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ device_apps.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ device_apps.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ device_apps.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ device_apps.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ device_apps.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ device_apps.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ device_apps.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ device_apps.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ device_apps.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ device_apps.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ device_apps.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ device_apps.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ device_apps.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.device_pkgs  %}
+                var div_name = '#device_pkgs_div';
+                $(div_name).find("select[name='get_ness']").val('{{ device_pkgs.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ device_pkgs.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ device_pkgs.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ device_pkgs.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ device_pkgs.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ device_pkgs.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ device_pkgs.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ device_pkgs.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ device_pkgs.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ device_pkgs.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ device_pkgs.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ device_pkgs.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ device_pkgs.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ device_pkgs.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.net_id_api  %}
+                var div_name = 'net_id_api_div';
+                $(div_name).find("select[name='get_ness']").val('{{ net_id_api.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ net_id_api.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ net_id_api.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ net_id_api.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ net_id_api.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ net_id_api.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ net_id_api.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ net_id_api.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ net_id_api.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ net_id_api.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ net_id_api.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ net_id_api.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ net_id_api.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ net_id_api.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.position_gps  %}
+                var div_name = '#position_gps_div';
+                $(div_name).find("select[name='get_ness']").val('{{ position_gps.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ position_gps.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ position_gps.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ position_gps.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ position_gps.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ position_gps.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ position_gps.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ position_gps.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ position_gps.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ position_gps.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ position_gps.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ position_gps.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ position_gps.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ position_gps.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.basis_email  %}
+                var div_name = '#basis_email_div';
+                $(div_name).find("select[name='get_ness']").val('{{ basis_email.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ basis_email.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ basis_email.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ basis_email.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ basis_email.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ basis_email.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ basis_email.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ basis_email.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ basis_email.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ basis_email.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ basis_email.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ basis_email.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ basis_email.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ basis_email.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.net_id_account  %}
+                var div_name = '#net_id_account_div';
+                $(div_name).find("select[name='get_ness']").val('{{ net_id_account.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ net_id_account.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ net_id_account.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ net_id_account.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ net_id_account.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ net_id_account.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ net_id_account.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ net_id_account.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ net_id_account.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ net_id_account.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ net_id_account.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ net_id_account.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ net_id_account.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ net_id_account.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.net_id_password  %}
+                var div_name = '#net_id_password_div';
+                $(div_name).find("select[name='get_ness']").val('{{ net_id_password.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ net_id_password.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ net_id_password.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ net_id_password.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ net_id_password.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ net_id_password.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ net_id_password.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ net_id_password.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ net_id_password.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ net_id_password.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ net_id_password.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ net_id_password.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ net_id_password.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ net_id_password.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.basis_name  %}
+                var div_name = '#basis_name_div';
+                $(div_name).find("select[name='get_ness']").val('{{ basis_name.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ basis_name.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ basis_name.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ basis_name.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ basis_name.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ basis_name.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ basis_name.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ basis_name.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ basis_name.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ basis_name.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ basis_name.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ basis_name.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ basis_name.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ basis_name.get_privacy_backinfo|safe }}');
+            {% endif %}
+
+            {% if d.basis_mobilephone  %}
+                var div_name = '#basis_mobilephone_div';
+                $(div_name).find("select[name='get_ness']").val('{{ basis_mobilephone.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ basis_mobilephone.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ basis_mobilephone.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ basis_mobilephone.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ basis_mobilephone.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ basis_mobilephone.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ basis_mobilephone.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ basis_mobilephone.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ basis_mobilephone.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ basis_mobilephone.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ basis_mobilephone.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ basis_mobilephone.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ basis_mobilephone.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ basis_mobilephone.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.basis_telephone  %}
+                var div_name = '#basis_telephone_div';
+                $(div_name).find("select[name='get_ness']").val('{{ basis_telephone.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ basis_telephone.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ basis_telephone.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ basis_telephone.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ basis_telephone.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ basis_telephone.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ basis_telephone.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ basis_telephone.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ basis_telephone.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ basis_telephone.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ basis_telephone.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ basis_telephone.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ basis_telephone.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ basis_telephone.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.basis_address  %}
+                var div_name = '#basis_address_div';
+                $(div_name).find("select[name='get_ness']").val('{{ basis_address.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ basis_address.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ basis_address.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ basis_address.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ basis_address.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ basis_address.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ basis_address.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ basis_address.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ basis_address.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ basis_address.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ basis_address.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ basis_address.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{basis_address.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ basis_address.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.personal_id  %}
+                var div_name = '#personal_id_div';
+                $(div_name).find("select[name='get_ness']").val('{{ personal_id.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ personal_id.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ personal_id.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ personal_id.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ personal_id.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ personal_id.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ personal_id.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ personal_id.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ personal_id.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ personal_id.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ personal_id.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ personal_id.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ personal_id.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ personal_id.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.biology_finger  %}
+                var div_name = '#biology_finger_div';
+                $(div_name).find("select[name='get_ness']").val('{{ biology_finger.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ biology_finger.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ biology_finger.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ biology_finger.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ biology_finger.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ biology_finger.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ biology_finger.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ biology_finger.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ biology_finger.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ biology_finger.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ biology_finger.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ biology_finger.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").val('{{ biology_finger.get_privacy_infoc|safe  }}');
+
+                //$(div_name).find("textarea[name='privacy_backinfo']").empty();linebreaksbr
+                //alert
+                $(div_name).find("textarea[name='privacy_backinfo']").appendHtml('{{ biology_finger.get_privacy_backinfo|safe }}')
+
+            {% endif %}
+            {% if d.biology_portrait  %}
+                var div_name = '#biology_portrait_div';
+                $(div_name).find("select[name='get_ness']").val('{{ biology_portrait.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ biology_portrait.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ biology_portrait.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ biology_portrait.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ biology_portrait.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ biology_portrait.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ biology_portrait.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ biology_portrait.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ biology_portrait.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ biology_portrait.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ biology_portrait.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ biology_portrait.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ biology_portrait.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ biology_portrait.get_privacy_backinfo|safe }}');
+            {% endif %}
+            {% if d.device_security  %}
+                var div_name = '#device_security_div';
+                $(div_name).find("select[name='get_ness']").val('{{ device_security.get_ness }}');
+                $(div_name).find("select[name='get_src']").selectpicker('val','{{ device_security.get_src }}'.split(','));
+                $(div_name).find("select[name='use_show']").val('{{ device_security.use_show }}');
+                $(div_name).find("select[name='use_dp']").val('{{ device_security.use_dp }}');
+                $(div_name).find("select[name='use_log']").val('{{ device_security.use_log }}');
+                $(div_name).find("select[name='trans_out']").val('{{ device_security.trans_out }}');
+                $(div_name).find("select[name='trans_in']").val('{{ device_security.trans_in }}');
+                $(div_name).find("select[name='storage_point']").val('{{ device_security.storage_point }}');
+                $(div_name).find("select[name='storage_allow']").val('{{ device_security.storage_allow }}');
+                $(div_name).find("select[name='storage_encryp']").val('{{ device_security.storage_encryp }}');
+                $(div_name).find("select[name='server_log']").val('{{ device_security.server_log }}');
+                $(div_name).find("select[name='delete_point']").val('{{ device_security.delete_point }}');
+                $(div_name).find("textarea[name='privacy_infoc']").text('{{ device_security.get_privacy_infoc|safe }}');
+                $(div_name).find("textarea[name='privacy_backinfo']").text('{{ device_security.get_privacy_backinfo|safe }}');
+            {% endif %}
+        {%endifequal%}
+    })
+
+
+    </script>
+
+{% endblock %}

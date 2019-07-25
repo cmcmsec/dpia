@@ -1,0 +1,147 @@
+{%extends "base.html"%}
+
+{% block headercss %}
+ <style>
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+</style>
+
+{% endblock %}
+
+{% block contentWrapper%}
+
+<div class="content-wrapper">
+
+    <section class="content" >
+
+
+      <div class="row">
+        <div class="col-sm-12" >
+          <div class="box" style="overflow-x:scroll;">
+            <div class="box-header">
+              <h3 style="float:left" class="box-title">审查记录列表</h3>
+
+                    <a style="float:left" href="/invest/investlist/all/">&nbsp;&nbsp;&nbsp;&nbsp;查看所有</a>
+                    <a style="float:left" href="/invest/investlist/self/">&nbsp;&nbsp;&nbsp;&nbsp;查看自己</a>
+
+
+                <a style="float:right" href="/invest/add_invest/">&nbsp;&nbsp;&nbsp;&nbsp;添加审查记录</a>
+            </div>
+            <!-- /.box-header -->
+
+            <div class="box-body" >
+              <table id="dpia_list_table" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+				  <th >ID</th>
+                  <th style="white-space:nowrap">产品名称</th>
+
+                    <th style="white-space:nowrap">产品介绍</th>
+                    <th style="white-space:nowrap">用户所在国家</th>
+                    <th style="white-space:nowrap">存储数据国家</th>
+                  <th style="white-space:nowrap">产品隐私负责人</th>
+				  <th style="white-space:nowrap">产品隐私专员</th>
+                    <!--<th style="white-space:nowrap">填加时间</th>-->
+                    <th style="white-space:nowrap">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+				
+		
+				{% for d in  dpialist%}
+
+
+						<tr>
+							<td>{{d.showid}}
+                            </td>
+							<td >
+                                {{d.pro_name}}
+                            </td>
+                            <td >
+                                {{d.pro_desc}}
+                            </td>
+                            <td >
+                                {{d.user_country}}
+                            </td>
+                            <td >
+                                {{d.data_country}}
+                            </td>
+                            <td >
+                                {{d.pro_pri_leader}}
+                            </td>
+                            <td >
+                                {{d.pro_pri_name}}
+                            </td>
+
+                            <!--<td>{{ d.add_time|date:'Y-m-d H:i:s'}}</td>-->
+
+
+
+
+                            <td style="white-space:nowrap;">
+
+                                    <a href="/invest/edit_invest/{{ d.showid }}/">编辑</a>
+                                <!--<a onclick="delS('{{d.id}}')">&nbsp;&nbsp;删除</a>-->
+                            </td>
+
+
+						</tr>
+				{% endfor %}
+   
+			
+               
+   
+                </tbody>
+                
+              </table>
+            </div>
+
+            <!-- /.box -->
+          </div>
+		</div>
+	  
+	</div> <!-- /.row-->
+
+	</section>
+</div>
+{% endblock %}
+{% block bodyjs %}
+
+<script src="/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/static/bower_components/datatables.net-bs/js/dataTables.buttons.min.js"></script>
+
+<script>
+  $(function () {
+    
+    $('#example').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+	var table = $('#dpia_list_table').DataTable({
+		"pageLength": 50,
+		'autoWidth'   : true,
+
+	})
+
+  })
+
+
+</script>
+
+{% endblock %}
