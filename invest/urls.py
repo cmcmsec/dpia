@@ -24,7 +24,6 @@ urlpatterns = [
     path('edit_invest/<str:invest_id>/', views.edit_invest),
     path('save_invest/', views.save_invest),
     path('update_invest/', views.update_invest),
-    #path('uploadleakfile/', views.uploadleakfile),
     path('saveproname/', views.saveproname),
 
 

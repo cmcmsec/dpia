@@ -336,34 +336,6 @@ def GetFileMd5(filename):
         myhash.update(b)
     f.close()
     return myhash.hexdigest()
-def uploadleakfile(request):
-    #LEAKPATH='/opt/file/leak/'
-    LEAKPATH = r'D:\atesta\leak'
-
-    leakfile = request.FILES.get('leakfile')
-    leakname = leakfile.name
-    leaksize = leakfile.size
-    rp = str(random.randint(10, 10000))
-    apath=os.path.join(LEAKPATH,rp,leakname)
-    retdata = {}
-    adir = os.path.dirname(apath)
-    if not os.path.exists(adir):
-        os.mkdir(adir)
-    f = open(apath, 'wb')
-    for line in leakfile.chunks():
-        f.write(line)
-    f.close()
-    leakmd5 = GetFileMd5(apath)
-
-
-
-    retdata["code"]=0
-    retdata["data"]={"leak_file":apath,"leak_name":leakname,"leak_size":leaksize,"leak_md5":leakmd5}
-
-
-
-    #print(retdata)
-    return HttpResponse(json.dumps(retdata,ensure_ascii=False),content_type="application/json,charset=utf-8")
 
 
 def getPriObjs(invest_id):
