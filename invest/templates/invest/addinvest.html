@@ -356,63 +356,6 @@
         }
 
     </script>
-    <script>
-        function uploadLeak(){
-
-            var filestr = $("#leakFile").val();
-
-            if (filestr==""){
-                alert("请选择要上传的文件");
-                return false;
-            }
-
-            var formData=new FormData();
-            formData.append("leakfile",$("#leakFile")[0].files[0]);
-            formData.append("csrfmiddlewaretoken",'{{ csrf_token }}');
-            $('#leakFile').attr('disabled',true);
-            $('#leakFileId').attr('disabled',true);
-            $('#form-file-progress').show();
-	        $.ajax({
-                processData: false,
-                contentType: false,
-			    type: "POST",
-
-			    url:"/invest/uploadleakfile/",
-			    data:formData,
-			    success:function (result) {
-                    $('#leakFile').attr('disabled',false);
-                    $('#leakFileId').attr('disabled',false);
-                    $('#form-file-progress').hide();
-				    if (result.code == 0) {
-                        $("#checklist_dataleak_path").val(result.data.leak_file);
-                        $("#checklist_dataleak_name").val(result.data.leak_name);
-
-					    alert("上传成功");
-
-                    }else if(result.code == 2){
-                        alert("此文件已存在，请重新选择文件或修改原有文件。（md5判断）");
-
-                    }else if(result.code == 3){
-                        alert("文件名称有异常");
-
-                    }else if(result.code == 4){
-                        alert("文件名称不符合要求");
-
-                    }else if(result.code == 5){
-                        alert("存在重名文件");
-
-                    }else{
-
-					     alert('异常，请检查');
-				     };
-
-			    },
-			    error:function(){
-				    alert("异常");
-			    }
-		    });
-        }
-    </script>
 
     <script>
          $(function() {
@@ -506,7 +449,7 @@ function dataVerifyChecklist(){
     var msg="";
 
 	/*var checklist_dpia_check =  $('#checklist_dpia_check').val();
-	if (checklist_dpia_check==""){msg="请填写xxxxGDPR字段评估工具";}
+	if (checklist_dpia_check==""){msg="请填写猎豹移动GDPR字段评估工具";}
 
 	if(msg=="") {if ($('#checklist_cookie').val()=="") {msg="请填写Cookie/Token使用";}}
 
